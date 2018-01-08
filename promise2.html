@@ -1,0 +1,75 @@
+<html>
+	https://developers.google.com/web/fundamentals/primers/promises
+</html>
+
+<script>
+	
+	function get(url) {
+		// return a new promise
+		return new Promise(function(resolve, reject) {
+			//do usual xhr stuff
+			var req = new XMLHttpRequest();
+			req.open('GET', url);
+
+			req.onload = function() {
+				//this is called even on 404 etc so check the status
+				if (req.status == 200) {
+					//resolve the promise with the response text
+					resolve(req.response);
+				}
+				else {
+					//otherwise reject with the status text which will hopefully be meaningful
+					reject(Error(req.statusText));
+				}
+			};
+
+			//handle network errors
+			req.onerror = function() {
+				reject(Error("Network Error"));
+			};
+
+			//make the request
+			req.send();
+		});
+	}
+
+	// get('story.json').then(function(response) {
+	// 	return JSON.parse(response);
+	// }).then(function(response) {
+	// 	console.log("Hello JSON!", response);
+	// });
+
+	// get('story.json').then(JSON.parse).then(function(response){
+	// 	console.log("Hello JSON!", response);
+	// });
+
+	function getJSON(url) {
+		return get(url).then(JSON.parse);
+	}
+
+	// getJSON('story.json').then(function(story) {
+ //    	return getJSON(story.chapterUrls[0]);
+	// }).then(function(chapter1) {
+ //  		console.log("Got chapter 1!", chapter1);
+	// });
+
+	var storyPromise;
+
+	function getChapter(i) {
+		storyPromise = storyPromise || getJSON('story.json');
+
+		return storyPromise.then(function(story) {
+			return getJSON(story.chapterUrls[i]);
+		})
+	}
+
+	getChapter(0).then(function(chapter) {
+		console.log(chapter);
+		return getChapter(1);
+	}).then(function(chapter) {
+		console.log(chapter);
+	})
+
+	//next - error handling section
+
+</script>

@@ -1,0 +1,24 @@
+<html>
+	https://developers.google.com/web/fundamentals/primers/promises
+</html>
+
+
+<script>
+	var promise = new Promise( function(resolve, reject) {
+		//do something, then...
+
+		if (1 > 2) {
+			resolve("Everything worked");
+		}
+		else {
+			reject(Error("It broke."));
+		}
+	})
+
+
+	promise.then(function(result) {
+		console.log(result); //worked
+	}, function(err) {
+		console.log(err); //it didn't
+	});
+</script>
