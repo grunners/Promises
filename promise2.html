@@ -96,5 +96,21 @@
 		console.log("Keep the spinner hidden");
 	})
 
+	//create a sequence
+
+	// start off with a promise that always resolves
+	// Start off with a promise that always resolves
+var sequence = Promise.resolve();
+
+// Loop through our chapter urls
+story.chapterUrls.forEach(function(chapterUrl) {
+  // Add these actions to the end of the sequence
+  sequence = sequence.then(function() {
+    return getJSON(chapterUrl);
+  }).then(function(chapter) {
+    addHtmlToPage(chapter.html);
+  });
+})
+
 
 </script>
