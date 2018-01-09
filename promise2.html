@@ -53,23 +53,48 @@
  //  		console.log("Got chapter 1!", chapter1);
 	// });
 
-	var storyPromise;
+	// var storyPromise;
 
-	function getChapter(i) {
-		storyPromise = storyPromise || getJSON('story.json');
+	// function getChapter(i) {
+	// 	storyPromise = storyPromise || getJSON('story.json');
 
-		return storyPromise.then(function(story) {
-			return getJSON(story.chapterUrls[i]);
-		})
-	}
+	// 	return storyPromise.then(function(story) {
+	// 		return getJSON(story.chapterUrls[i]);
+	// 	})
+	// }
 
-	getChapter(0).then(function(chapter) {
-		console.log(chapter);
-		return getChapter(1);
-	}).then(function(chapter) {
-		console.log(chapter);
+	// getChapter(0).then(function(chapter) {
+	// 	console.log(chapter);
+	// 	return getChapter(1);
+	// }).then(function(chapter) {
+	// 	console.log(chapter);
+	// })
+
+	// //next - error handling section
+
+	// var jsonPromise = new Promise(function(resolve, reject) {
+	// 	//JSON.parse throws an error if we give it invalid JSON, so this implicitly rejects:
+	// 	resolve(JSON.parse("This isnt JSON"));
+	// });
+
+	// jsonPromise.then(function(data) {
+	// 	//this never happens:
+	// 	console.log("It worked! ", data);
+	// }).catch(function(err) {
+	// 	//instead, this happens
+	// 	console.log("It failed! ", err);
+	// })
+
+	//more error handling
+	getJSON('story.json').then(function(story) {
+		return getJSON(story.chapterUrls[0]);
+	}).then(function(chapter1) {
+		addHtmlToPage(chapter1.html); //this fails
+	}).catch(function() {
+		console.log("Failed to show chapter");
+	}).then(function() {
+		console.log("Keep the spinner hidden");
 	})
 
-	//next - error handling section
 
 </script>
